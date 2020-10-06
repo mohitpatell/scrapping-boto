@@ -13,7 +13,7 @@ from selenium.webdriver.chrome.options import Options
 import shortuuid
 import json
 import boto3
-s3_resource = boto3.resource('s3')
+s3 = boto3.client('s3')
 
 def is_English(s):
     try:
@@ -327,7 +327,7 @@ url_file = url_file_name + ".csv"
 urls_df = pd.read_csv(url_file)
 # urls_df.head()
 # N = no of articles to be scrapped
-N = 4999
+N = 2
 #N = len(urls_df)
 # MAKE LISTS
 urls = urls_df.url.to_list()
@@ -422,11 +422,13 @@ for article_i in range(N):
         
             first_bucket_name = 'youtern-user-files'
             first_file_name = output_file
+            s3.upload_file(json_file, 'youtern-user-files', 'json_file11.json')
+            s3.upload_file(output_file, 'youtern-user-files', 'json_file22.csv')
         
-            first_bucket = s3_resource.Bucket(name=first_bucket_name)   
-            first_object = s3_resource.Object(bucket_name=first_bucket_name, key=first_file_name)
+            # first_bucket = s3_resource.Bucket(name=first_bucket_name)   
+            # first_object = s3_resource.Object(bucket_name=first_bucket_name, key=first_file_name)
         
-            s3_resource.Object(first_bucket_name, first_file_name).upload_file(Filename=first_file_name)
+            # s3_resource.Object(first_bucket_name, first_file_name).upload_file(Filename=first_file_name)
         
         except Exception as e:
             print(str(e))

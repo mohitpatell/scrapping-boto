@@ -10,14 +10,18 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
+import os
 import shortuuid
 import json
-import boto3
-s3 = boto3.client('s3')
+# import boto3
+# s3 = boto3.client('s3')
+
+from boto.s3.connection import S3Connection
+s3 = S3Connection(os.environ['S3_KEY'], os.environ['S3_SECRET'])
 
 def is_English(s):
     try:
-        s.encode(encoding='utf-8').decode('ascii')
+        s.encode(encoding='utf-8s').decode('ascii')
     except UnicodeDecodeError:
         return False
     else:
@@ -422,6 +426,7 @@ for article_i in range(N):
         
             first_bucket_name = 'youtern-user-files'
             first_file_name = output_file
+            # s3.
             s3.upload_file(json_file, 'youtern-user-files', 'json_file11.json')
             s3.upload_file(output_file, 'youtern-user-files', 'json_file22.csv')
         
